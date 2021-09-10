@@ -141,32 +141,36 @@ document.addEventListener('DOMContentLoaded', () => {
                 next.classList.remove('d-none');
                 prev.classList.remove('d-none');
                 send.classList.add('d-none');
-            } 
-
-            if (numberQuestion === 0) {
-                prev.classList.add('d-none');
             }
 
-            if (numberQuestion === questions.length) {
-                next.classList.add('d-none');
-                prev.classList.add('d-none');
-                send.classList.remove('d-none');
-                formAnswers.innerHTML = `
-                    <div class="form-group">
-                        <label for="numberPhone">Enter your phone number</label>
-                        <input type="phone" class="form-control" id="numberPhone">
-                    </div>
-                `;
-                questionTitle.textContent = '';
+            switch (numberQuestion) {
+                case 0:
+                    prev.classList.add('d-none');
+                    break;
+                case questions.length:
+                    next.classList.add('d-none');
+                    prev.classList.add('d-none');
+                    send.classList.remove('d-none');
+                    formAnswers.innerHTML = `
+                        <div class="form-group">
+                            <label for="numberPhone">Enter your phone number</label>
+                            <input type="phone" class="form-control" id="numberPhone">
+                        </div>
+                    `;
+                    questionTitle.textContent = '';
+                    break;
+                case questions.length + 1:
+                    formAnswers.textContent = 'Спасибо за пройденный тест!';
+
+                    setTimeout(() => {
+                        modalBlock.classList.remove('d-block');
+                    }, 2000);
+                    break;
+                default:
+                    console.log('Не выбран ни один вариант');
+
             }
 
-            if (numberQuestion === questions.length + 1) {
-                formAnswers.textContent = 'Спасибо за пройденный тест!';
-
-                setTimeout(() => {
-                    modalBlock.classList.remove('d-block');
-                }, 2000);
-            }
         };
 
         renderQuestions(numberQuestion);
