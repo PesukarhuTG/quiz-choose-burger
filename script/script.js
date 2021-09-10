@@ -110,16 +110,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const playTest = () => {
 
-        let numberQuestion = 1;
+        let numberQuestion = 0;
 
         //create answers
         const renderAnswers = (index) => {
-
             questions[index].answers.forEach((answer) => {
                 const answerItem = document.createElement('div');
-
                 answerItem.classList.add('answers-item', 'd-flex', 'flex-column');
-
                 answerItem.innerHTML = `
                         <input type="${questions[index].type}" id="${answer.id}" name="answer" class="d-none">
                         <label for="answerItem1" class="d-flex flex-column justify-content-between">
@@ -127,19 +124,32 @@ document.addEventListener('DOMContentLoaded', () => {
                         <span>${answer.title}</span>
                         </label>
                 `;
-
                 formAnswers.appendChild(answerItem);
             }
-
             );
-
         };
 
-        //insert info in questions
+        //rendering function for questions and answers
         const renderQuestions = (indexQuestion) => {
             formAnswers.innerHTML = '';
-            questionTitle.textContent = `${questions[indexQuestion].question}`;
-            renderAnswers(indexQuestion);
+
+            if ((numberQuestion > 0 || numberQuestion == 0) && (numberQuestion < questions.length - 1 || numberQuestion == questions.length - 1)) {
+                questionTitle.textContent = `${questions[indexQuestion].question}`;
+                renderAnswers(indexQuestion);
+                next.classList.remove('d-none');
+                prev.classList.remove('d-none');
+            } 
+
+            if (numberQuestion === 0) {
+                prev.classList.add('d-none');
+            }
+
+
+            if (numberQuestion === questions.length) {
+                next.classList.add('d-none');
+                formAnswers.textContent = 'Спасибо';
+            }
+
         };
 
         renderQuestions(numberQuestion);
